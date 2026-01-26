@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - Comfort Furniture</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f8f8;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .breadcrumb a {
+            color: #666;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .breadcrumb a:hover {
+            color: #333;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .cart-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .cart-items {
+            border-top: 2px solid #f0f0f0;
+            border-bottom: 2px solid #f0f0f0;
+            padding: 20px 0;
+        }
+
+        .cart-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 0.5fr;
+            gap: 20px;
+            padding: 15px 0;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .cart-item {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 0.5fr;
+            gap: 20px;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .item-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .item-image {
+            width: 80px;
+            height: 80px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .item-details h3 {
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .item-price {
+            font-size: 14px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 70px;
+        }
+
+        .quantity-control button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px 8px;
+            color: #666;
+            font-size: 16px;
+        }
+
+        .quantity-control button:hover {
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .quantity-control input {
+            width: 30px;
+            border: none;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .quantity-control input:focus {
+            outline: none;
+        }
+
+        .subtotal {
+            text-align: right;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .remove-item {
+            background: none;
+            border: none;
+            color: #dc3545;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 0;
+            transition: all 0.2s;
+        }
+
+        .remove-item:hover {
+            color: #c82333;
+            transform: scale(1.2);
+        }
+
+        .cart-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #333;
+            border: 1px solid #333;
+        }
+
+        .btn-secondary:hover {
+            background: #f0f0f0;
+        }
+
+        .btn-primary {
+            background: #dc3545;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: #c82333;
+        }
+
+     
+
+        .cart-summary {
+            background: #f9f9f9;
+            padding: 25px;
+            border-radius: 4px;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .cart-summary h2 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #333;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 15px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .summary-row.total {
+            font-weight: 700;
+            color: #333;
+            font-size: 16px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .checkout-btn:hover {
+            background: #c82333;
+        }
+
+        .message {
+            padding: 12px 20px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cart-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .cart-header,
+            .cart-item {
+                grid-template-columns: 1.5fr 0.8fr;
+            }
+
+            .quantity-control,
+            .subtotal,
+            .remove-item {
+                grid-column: 2;
+                justify-self: end;
+            }
+
+            .cart-summary {
+                position: static;
+            }
+        }
+
+        .calculator-display {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="furniture.html">Home</a>
+            <span>/</span>
+            <span>Cart</span>
+        </div>
+
+        <h1>Shopping Cart</h1>
+
+        <div id="message" class="message"></div>
+
+        <div class="cart-wrapper">
+            <div>
+                <div class="cart-header">
+                    <div>Product</div>
+                    <div>Price</div>
+                    <div>Quantity</div>
+                    <div>Subtotal</div>
+                    <div></div>
+                </div>
+
+                <div class="cart-items" id="cartItems">
+                    <div class="cart-item" data-price="50">
+                        <div class="item-info">
+                            <div class="item-image">
+                                <img class="product-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWnEOdRlt9Yx-ZoHVE-5lWoQWHVBZyVAjZ1w&s" alt="Gaming Chair" style="cursor: pointer;" title="Click to change product">
+                            </div>
+                            <div class="item-details">
+                                <h3 class="product-name" style="cursor: pointer; color: #333; text-decoration: underline;" title="Click to change product">Gaming Chair</h3>
+                            </div>
+                        </div>
+                        <div class="item-price">$50</div>
+                        <div>
+                            <div class="quantity-control">
+                                <button class="qty-minus">−</button>
+                                <input class="qty-input" type="number" value="1" min="1">
+                                <button class="qty-plus">+</button>
+                            </div>
+                            <div class="calculator-display">= <span class="calc-qty">1</span> × $<span class="calc-price">50</span></div>
+                        </div>
+                        <div class="subtotal">$50</div>
+                        <button class="remove-item">✕</button>
+                    </div>
+
+                    <div class="cart-item" data-price="20">
+                        <div class="item-info">
+                            <div class="item-image">
+                                <img class="product-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdOtHeatKFOnsTj7jbrzHx56D9E3H_wmu6PA&s" alt="Library Stool Chair" style="cursor: pointer;" title="Click to change product">
+                            </div>
+                            <div class="item-details">
+                                <h3 class="product-name" style="cursor: pointer; color: #333; text-decoration: underline;" title="Click to change product">Library Stool Chair</h3>
+                            </div>
+                        </div>
+                        <div class="item-price">$20</div>
+                        <div>
+                            <div class="quantity-control">
+                                <button class="qty-minus">−</button>
+                                <input class="qty-input" type="number" value="2" min="1">
+                                <button class="qty-plus">+</button>
+                            </div>
+                            <div class="calculator-display">= <span class="calc-qty">2</span> × $<span class="calc-price">20</span></div>
+                        </div>
+                        <div class="subtotal">$40</div>
+                        <button class="remove-item">✕</button>
+                    </div>
+                </div>
+
+                <div class="cart-actions">
+                    <button class="btn btn-secondary" id="returnBtn">Return To Shop</button>
+                    <button class="btn btn-secondary" id="updateBtn">Update Cart</button>
+                </div>
+
+           
+            </div>
+
+            <div class="cart-summary">
+                <h2>Cart Total</h2>
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="subtotalDisplay">$90</span>
+                </div>
+                <div class="summary-row" id="discountRow" style="display: none;">
+                    <span>Discount:</span>
+                    <span id="discountDisplay">-$0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Shipping:</span>
+                    <span>Free</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total:</span>
+                    <span id="totalDisplay">$90</span>
+                </div>
+                <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let appliedDiscount = 0;
+
+        function updateCalculatorDisplay(item) {
+            const qty = item.querySelector('.qty-input').value;
+            const price = item.dataset.price;
+            item.querySelector('.calc-qty').textContent = qty;
+            item.querySelector('.calc-price').textContent = price;
+        }
+
+        function calculateSubtotal(item) {
+            const qty = parseInt(item.querySelector('.qty-input').value) || 1;
+            const price = parseFloat(item.dataset.price);
+            return qty * price;
+        }
+
+        function updateCartTotals() {
+            let grandTotal = 0;
+            const cartItems = document.querySelectorAll('.cart-item');
+
+            cartItems.forEach(item => {
+                const subtotal = calculateSubtotal(item);
+                item.querySelector('.subtotal').textContent = '$' + subtotal.toFixed(2);
+                updateCalculatorDisplay(item);
+                grandTotal += subtotal;
+            });
+
+            const finalTotal = grandTotal - appliedDiscount;
+            document.getElementById('subtotalDisplay').textContent = '$' + grandTotal.toFixed(2);
+            document.getElementById('totalDisplay').textContent = '$' + finalTotal.toFixed(2);
+        }
+
+        // Quantity increase
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('qty-plus')) {
+                const input = e.target.closest('.quantity-control').querySelector('.qty-input');
+                input.value = parseInt(input.value) + 1;
+                updateCartTotals();
+            }
+        });
+
+        // Quantity decrease
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('qty-minus')) {
+                const input = e.target.closest('.quantity-control').querySelector('.qty-input');
+                if (parseInt(input.value) > 1) {
+                    input.value = parseInt(input.value) - 1;
+                    updateCartTotals();
+                }
+            }
+        });
+
+        // Quantity input change
+        document.addEventListener('change', function(e) {
+            if (e.target.classList.contains('qty-input')) {
+                if (e.target.value < 1) e.target.value = 1;
+                updateCartTotals();
+            }
+        });
+
+        // Remove item
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('remove-item')) {
+                const itemName = e.target.closest('.cart-item').querySelector('.item-details h3').textContent;
+                e.target.closest('.cart-item').remove();
+                showMessage(itemName + ' removed from cart', 'success');
+                updateCartTotals();
+            }
+        });
+
+        // Coupon functionality
+        document.getElementById('applyCoupon').addEventListener('click', function() {
+            const couponCode = document.getElementById('couponInput').value.toUpperCase();
+            const subtotal = parseFloat(document.getElementById('subtotalDisplay').textContent.replace('$', ''));
+            
+            let discount = 0;
+            let validCoupon = false;
+
+            const coupons = {
+                'SAVE10': 0.10,
+                'SAVE20': 0.20,
+                'SAVE30': 0.30,
+                'FLAT50': null
+            };
+
+            if (couponCode === 'FLAT50') {
+                discount = 50;
+                validCoupon = true;
+            } else if (coupons[couponCode]) {
+                discount = subtotal * coupons[couponCode];
+                validCoupon = true;
+            }
+
+            if (validCoupon) {
+                appliedDiscount = Math.min(discount, subtotal);
+                showMessage(`Coupon applied! You saved $${appliedDiscount.toFixed(2)}`, 'success');
+                
+                document.getElementById('discountRow').style.display = 'flex';
+                document.getElementById('discountDisplay').textContent = '-$' + appliedDiscount.toFixed(2);
+                document.getElementById('couponInput').value = '';
+                
+                updateCartTotals();
+            } else {
+                showMessage('Invalid coupon code', 'error');
+                document.getElementById('couponInput').value = '';
+            }
+        });
+
+        // Return to shop
+        document.getElementById('returnBtn').addEventListener('click', function() {
+            showMessage('Redirecting to shop...', 'success');
+            setTimeout(() => {
+                window.location.href = 'furniture.html';
+            }, 1500);
+        });
+
+        // Update cart
+        document.getElementById('updateBtn').addEventListener('click', function() {
+            updateCartTotals();
+            showMessage('Cart updated successfully!', 'success');
+        });
+
+        // Checkout
+        document.getElementById('checkoutBtn').addEventListener('click', function() {
+            const total = document.getElementById('totalDisplay').textContent;
+            showMessage('Proceeding to checkout with total: ' + total, 'success');
+            setTimeout(() => {
+                alert('Thank you for your order!\nTotal: ' + total);
+            }, 1500);
+        });
+
+        // Show message
+        function showMessage(message, type = 'success') {
+            const messageEl = document.getElementById('message');
+            messageEl.textContent = message;
+            messageEl.className = 'message show ' + type;
+
+            setTimeout(() => {
+                messageEl.classList.remove('show');
+            }, 3000);
+        }
+
+        // Enter key for coupon
+        document.getElementById('couponInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('applyCoupon').click();
+            }
+        });
+
+        // Initialize
+        updateCartTotals();
+    </script>
+</body>
+</html>
