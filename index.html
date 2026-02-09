@@ -5,8 +5,135 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comfort- Furniture Store</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Add to Cart Button Styles */
+        .product-card {
+            position: relative;
+        }
+        
+        .product-image {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .add-to-cart-btn {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #000;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            opacity: 0;
+            z-index: 5;
+        }
+        
+        .product-card:hover .add-to-cart-btn {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .add-to-cart-btn:hover {
+            background: #333;
+        }
+        
+        .add-to-cart-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+        
+        .product-icons {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 10;
+        }
+        
+        .icon-btn {
+            background: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            font-size: 18px;
+        }
+        
+        .icon-btn:hover {
+            background: #f0f0f0;
+            transform: scale(1.1);
+        }
+        
+        .cart-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .cart-notification.show {
+            display: block;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .cart-icon {
+            position: relative;
+            display: inline-block;
+        }
+    </style>
 </head>
 <body>
+    <!-- Cart Notification -->
+    <div class="cart-notification" id="cartNotification">
+        ✓ Item added to cart!
+    </div>
+
     <!-- Top Bar -->
     <div class="top-bar">
         <div class="top-bar-left">
@@ -15,30 +142,30 @@
         <div class="top-bar-right">
             <select>
                 <option value="en">English</option>
-            <option value="es">Español (Spanish)</option>
-            <option value="fr">Français (French)</option>
-            <option value="de">Deutsch (German)</option>
-            <option value="it">Italiano (Italian)</option>
-            <option value="pt">Português (Portuguese)</option>
-            <option value="ja">日本語 (Japanese)</option>
-            <option value="zh">中文 (Chinese)</option>
-            <option value="ru">Русский (Russian)</option>
-            <option value="ar">العربية (Arabic)</option>
+                <option value="es">Español (Spanish)</option>
+                <option value="fr">Français (French)</option>
+                <option value="de">Deutsch (German)</option>
+                <option value="it">Italiano (Italian)</option>
+                <option value="pt">Português (Portuguese)</option>
+                <option value="ja">日本語 (Japanese)</option>
+                <option value="zh">中文 (Chinese)</option>
+                <option value="ru">Русский (Russian)</option>
+                <option value="ar">العربية (Arabic)</option>
             </select> 
            <select>
-            <option value="USD">USD - US Dollar ($)</option>
-            <option value="EUR">EUR - Euro (€)</option>
-            <option value="GBP">GBP - British Pound (£)</option>
-            <option value="JPY">JPY - Japanese Yen (¥)</option>
-            <option value="CAD">CAD - Canadian Dollar (C$)</option>
-            <option value="AUD">AUD - Australian Dollar (A$)</option>
-            <option value="INR">INR - Indian Rupee (₹)</option>
-            <option value="CNY">CNY - Chinese Yuan (¥)</option>
-            <option value="CHF">CHF - Swiss Franc (Fr)</option>
-            <option value="SEK">SEK - Swedish Krona (kr)</option>
-            <option value="NOK">NOK - Norwegian Krone (kr)</option>
-            <option value="DKK">DKK - Danish Krone (kr)</option>
-        </select>
+                <option value="USD">USD - US Dollar ($)</option>
+                <option value="EUR">EUR - Euro (€)</option>
+                <option value="GBP">GBP - British Pound (£)</option>
+                <option value="JPY">JPY - Japanese Yen (¥)</option>
+                <option value="CAD">CAD - Canadian Dollar (C$)</option>
+                <option value="AUD">AUD - Australian Dollar (A$)</option>
+                <option value="INR">INR - Indian Rupee (₹)</option>
+                <option value="CNY">CNY - Chinese Yuan (¥)</option>
+                <option value="CHF">CHF - Swiss Franc (Fr)</option>
+                <option value="SEK">SEK - Swedish Krona (kr)</option>
+                <option value="NOK">NOK - Norwegian Krone (kr)</option>
+                <option value="DKK">DKK - Danish Krone (kr)</option>
+            </select>
             <a href="demo-signin.html">sign in</a>
             <a href="contact-demo.html">Demo log in</a>
         </div>
@@ -49,16 +176,19 @@
         <div class="logo">Comfort </div>
         
         <nav class="nav">
-            <a href="furniture.html">Home</a>
+            <a href="index.html">Home</a>
             <a href="shop.html">Shop</a>
             <a href="product.html">Product</a>
-             <a href="about.html">About</a>
+            <a href="about.html">About</a>
         </nav>
         
         <div class="header-right">
             <span class="search-icon">🔍</span>
             <span class="heart-icon"><a href="wish.html">♡</a></span>
-              <span class="cart-icon"> <a href="cart.html">🛒</a></span>
+            <span class="cart-icon">
+                <a href="cart.html">🛒</a>
+                <span class="cart-badge" id="cartBadge">0</span>
+            </span>
             <span class="profile-icon"><a href="user-demo.html">👤</a></span>
             <div class="contact">
                 <span class="contact-label">Contact Us</span>
@@ -76,8 +206,8 @@
         </div>
         
         <div class="hero-image">
-         <div class="chair-image">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1-q9d27dzM6LtTRg9w-3AMMAHZ3EJeknHGw&s";width: 300px; height: 350px; alt="chair image">
+            <div class="chair-image">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1-q9d27dzM6LtTRg9w-3AMMAHZ3EJeknHGw&s" width="300" height="350" alt="chair image">
             </div>
             <div class="discount-badge">
                 <div class="percentage">54%</div>
@@ -123,61 +253,56 @@
     
     <!-- Brands -->
     <div class="payment-wrapper">
-  <div class="payment-icons">
-    <!-- American Express -->
-    <svg viewBox="0 0 128 128" height="40" xmlns="http://www.w3.org/2000/svg" aria-label="American Express">
-      <rect width="128" height="128" fill="#2e77bc"/>
-      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="20" font-family="Arial, sans-serif">AMEX</text>
-    </svg>
+        <div class="payment-icons">
+            <!-- American Express -->
+            <svg viewBox="0 0 128 128" height="40" xmlns="http://www.w3.org/2000/svg" aria-label="American Express">
+                <rect width="128" height="128" fill="#2e77bc"/>
+                <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="20" font-family="Arial, sans-serif">AMEX</text>
+            </svg>
 
-    <!-- Apple Pay -->
-    <svg viewBox="0 0 128 128" height="40" xmlns="http://www.w3.org/2000/svg" aria-label="Apple Pay">
-      <rect width="128" height="128" fill="black"/>
-      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="20" font-family="Arial, sans-serif"> Pay</text>
-    </svg>
+            <!-- Apple Pay -->
+            <svg viewBox="0 0 128 128" height="40" xmlns="http://www.w3.org/2000/svg" aria-label="Apple Pay">
+                <rect width="128" height="128" fill="black"/>
+                <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="20" font-family="Arial, sans-serif"> Pay</text>
+            </svg>
 
-    <!-- Google Pay -->
-    <svg viewBox="0 0 128 128" height="40" xmlns="http://www.w3.org/2000/svg" aria-label="Google Pay">
-      <rect width="128" height="128" fill="white"/>
-      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="black" font-size="18" font-family="Arial, sans-serif">G Pay</text>
-    </svg>
+            <!-- Google Pay -->
+            <svg viewBox="0 0 128 128" height="40" xmlns="http://www.w3.org/2000/svg" aria-label="Google Pay">
+                <rect width="128" height="128" fill="white"/>
+                <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="black" font-size="18" font-family="Arial, sans-serif">G Pay</text>
+            </svg>
 
-    <!-- Discover -->
-    <svg viewBox="0 0 128 128" height="40" xmlns="http://www.w3.org/2000/svg" aria-label="Discover">
-      <rect width="128" height="128" fill="#f76b1c"/>
-      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="18" font-family="Arial, sans-serif">DISCOVER</text>
-    </svg>
+            <!-- Discover -->
+            <svg viewBox="0 0 128 128" height="40" xmlns="http://www.w3.org/2000/svg" aria-label="Discover">
+                <rect width="128" height="128" fill="#f76b1c"/>
+                <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="18" font-family="Arial, sans-serif">DISCOVER</text>
+            </svg>
 
-    <!-- Mastercard -->
-    <svg viewBox="0 0 128 128" height="40" xmlns="http://www.w3.org/2000/svg" aria-label="Mastercard">
-      <circle cx="48" cy="64" r="32" fill="#eb001b"/>
-      <circle cx="80" cy="64" r="32" fill="#f79e1b"/>
-      <text x="64" y="70" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="14" font-family="Arial, sans-serif">MC</text>
-    </svg>
+            <!-- Mastercard -->
+            <svg viewBox="0 0 128 128" height="40" xmlns="http://www.w3.org/2000/svg" aria-label="Mastercard">
+                <circle cx="48" cy="64" r="32" fill="#eb001b"/>
+                <circle cx="80" cy="64" r="32" fill="#f79e1b"/>
+                <text x="64" y="70" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="14" font-family="Arial, sans-serif">MC</text>
+            </svg>
 
-    <!-- Shop Pay -->
-    <svg viewBox="0 0 128 128" height="40" xmlns="http://www.w3.org/2000/svg" aria-label="Shop Pay">
-      <rect width="128" height="128" fill="#5f5f5f"/>
-      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="16" font-family="Arial, sans-serif">SHOP PAY</text>
-    </svg>
+            <!-- Shop Pay -->
+            <svg viewBox="0 0 128 128" height="40" xmlns="http://www.w3.org/2000/svg" aria-label="Shop Pay">
+                <rect width="128" height="128" fill="#5f5f5f"/>
+                <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="16" font-family="Arial, sans-serif">SHOP PAY</text>
+            </svg>
 
-    <!-- UnionPay -->
-    <svg viewBox="0 0 128 128" height="40" xmlns="http://www.w3.org/2000/svg" aria-label="UnionPay">
-      <rect width="128" height="128" fill="#00923f"/>
-      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="16" font-family="Arial, sans-serif">UnionPay</text>
-    </svg>
+            <!-- UnionPay -->
+            <svg viewBox="0 0 128 128" height="40" xmlns="http://www.w3.org/2000/svg" aria-label="UnionPay">
+                <rect width="128" height="128" fill="#00923f"/>
+                <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="16" font-family="Arial, sans-serif">UnionPay</text>
+            </svg>
 
-    <!-- Visa -->
-    <svg viewBox="0 0 128 128" height="40" xmlns="http://www.w3.org/2000/svg" aria-label="Visa">
-      <rect width="128" height="128" fill="#1a1f71"/>
-      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="20" font-family="Arial, sans-serif">VISA</text>
-    </svg>
-  </div>
-</div>
-
-    
-</div>
-
+            <!-- Visa -->
+            <svg viewBox="0 0 128 128" height="40" xmlns="http://www.w3.org/2000/svg" aria-label="Visa">
+                <rect width="128" height="128" fill="#1a1f71"/>
+                <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="20" font-family="Arial, sans-serif">VISA</text>
+            </svg>
+        </div>
     </div>
     
     <!-- Featured Products Section -->
@@ -185,16 +310,21 @@
         <h2 class="section-title">Featured Products</h2>
         <div class="section-controls">
             <button class="nav-btn">‹</button>
-            <button class="nav-btn ">›</button>
+            <button class="nav-btn">›</button>
         </div>
     </div>
     
     <!-- Products Grid -->
     <div class="products-grid">
-        <div class="product-card">
+        <div class="product-card" data-id="1">
             <div class="product-image">
                 <div class="product-tag">New</div>
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWnEOdRlt9Yx-ZoHVE-5lWoQWHVBZyVAjZ1w&s"; width="300"; height="350"; alt="Gaming Chair">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWnEOdRlt9Yx-ZoHVE-5lWoQWHVBZyVAjZ1w&s" width="300" height="350" alt="Gaming Chair">
+                <div class="product-icons">
+                    <button class="icon-btn heart-btn" onclick="toggleWishlist(this)">♡</button>
+                    <button class="icon-btn eye-btn" onclick="quickView('Gaming Chair')">👁</button>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart(1, 'Gaming Chair', 50, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWnEOdRlt9Yx-ZoHVE-5lWoQWHVBZyVAjZ1w&s')">Add To Cart</button>
             </div>
             <div class="product-card-content">
                 <div class="product-name">Gaming Chair</div>
@@ -205,11 +335,16 @@
             </div>
         </div>
       
-        <div class="product-card">
+        <div class="product-card" data-id="2">
             <div class="product-image">
                 <div class="product-tag">Sale</div>
-                <img src="https://m.media-amazon.com/images/I/81pnrYpHeIL._AC_UF894,1000_QL80_.jpg"; width="300"; height="350"; alt="Reading Chair">
-                 </div>
+                <img src="https://m.media-amazon.com/images/I/81pnrYpHeIL._AC_UF894,1000_QL80_.jpg" width="300" height="350" alt="Reading Chair">
+                <div class="product-icons">
+                    <button class="icon-btn heart-btn" onclick="toggleWishlist(this)">♡</button>
+                    <button class="icon-btn eye-btn" onclick="quickView('Reading Chair')">👁</button>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart(2, 'Reading Chair', 150, 'https://m.media-amazon.com/images/I/81pnrYpHeIL._AC_UF894,1000_QL80_.jpg')">Add To Cart</button>
+            </div>
             <div class="product-card-content">
                 <div class="product-name">Reading Chair</div>
                 <div class="product-footer">
@@ -219,11 +354,16 @@
             </div>
         </div>
       
-        <div class="product-card">
+        <div class="product-card" data-id="3">
             <div class="product-image">
                 <div class="product-tag">Sale</div>
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdOtHeatKFOnsTj7jbrzHx56D9E3H_wmu6PA&s"; width="300"; height="350"; alt="Library Stool Chair">
-                 </div>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdOtHeatKFOnsTj7jbrzHx56D9E3H_wmu6PA&s" width="300" height="350" alt="Library Stool Chair">
+                <div class="product-icons">
+                    <button class="icon-btn heart-btn" onclick="toggleWishlist(this)">♡</button>
+                    <button class="icon-btn eye-btn" onclick="quickView('Library Stool Chair')">👁</button>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart(3, 'Library Stool Chair', 20, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdOtHeatKFOnsTj7jbrzHx56D9E3H_wmu6PA&s')">Add To Cart</button>
+            </div>
             <div class="product-card-content">
                 <div class="product-name">Library Stool Chair</div>
                 <div class="product-footer">
@@ -233,10 +373,15 @@
             </div>
         </div>
        
-        <div class="product-card">
-            <div class="product-image ">
+        <div class="product-card" data-id="4">
+            <div class="product-image">
                 <div class="product-tag">New</div>
-               <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6LzphSpQkL1085ZUkCwUZ5ERqJvzJm3N_zA&s"; width="300"; height="350"; alt="Alice Chair">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6LzphSpQkL1085ZUkCwUZ5ERqJvzJm3N_zA&s" width="300" height="350" alt="Alice Chair">
+                <div class="product-icons">
+                    <button class="icon-btn heart-btn" onclick="toggleWishlist(this)">♡</button>
+                    <button class="icon-btn eye-btn" onclick="quickView('Alice Chair')">👁</button>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart(4, 'Alice Chair', 200, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6LzphSpQkL1085ZUkCwUZ5ERqJvzJm3N_zA&s')">Add To Cart</button>
             </div>
             <div class="product-card-content">
                 <div class="product-name">Alice Chair</div>
@@ -247,10 +392,15 @@
             </div>
         </div>
        
-        <div class="product-card">
-            <div class="product-image ">
+        <div class="product-card" data-id="5">
+            <div class="product-image">
                 <div class="product-tag">Sale</div>
-               <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSB3Vy-XLR6TGNIVSyQ-f5qk36rKDNHHYHe2A&s"; width="300"; height="350"; alt="Dining Chair">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSB3Vy-XLR6TGNIVSyQ-f5qk36rKDNHHYHe2A&s" width="300" height="350" alt="Dining Chair">
+                <div class="product-icons">
+                    <button class="icon-btn heart-btn" onclick="toggleWishlist(this)">♡</button>
+                    <button class="icon-btn eye-btn" onclick="quickView('Dining Chair')">👁</button>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart(5, 'Dining Chair', 60, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSB3Vy-XLR6TGNIVSyQ-f5qk36rKDNHHYHe2A&s')">Add To Cart</button>
             </div>
             <div class="product-card-content">
                 <div class="product-name">Dining Chair</div>
@@ -261,10 +411,15 @@
             </div>
         </div>
         
-        <div class="product-card">
-            <div class="product-image ">
+        <div class="product-card" data-id="6">
+            <div class="product-image">
                 <div class="product-tag">New</div>
-               <img src="https://cdn.mohd.it/cache/image/width=1200,format=webp/media/catalog/product/v/e/ventura-sedia-con-braccioli-grigia-tessuto-poliform-1.jpg"; width="300"; height="350"; alt="Ventura Chair">
+                <img src="https://cdn.mohd.it/cache/image/width=1200,format=webp/media/catalog/product/v/e/ventura-sedia-con-braccioli-grigia-tessuto-poliform-1.jpg" width="300" height="350" alt="Ventura Chair">
+                <div class="product-icons">
+                    <button class="icon-btn heart-btn" onclick="toggleWishlist(this)">♡</button>
+                    <button class="icon-btn eye-btn" onclick="quickView('Ventura Chair')">👁</button>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart(6, 'Ventura Chair', 80, 'https://cdn.mohd.it/cache/image/width=1200,format=webp/media/catalog/product/v/e/ventura-sedia-con-braccioli-grigia-tessuto-poliform-1.jpg')">Add To Cart</button>
             </div>
             <div class="product-card-content">
                 <div class="product-name">Ventura Chair</div>
@@ -275,26 +430,37 @@
             </div>
         </div>
         
-        <div class="product-card">
-            <div class="product-image ">
+        <div class="product-card" data-id="7">
+            <div class="product-image">
                 <div class="product-tag">Sale</div>
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVs0XP7dPNXWy2KBx_nOc4wfOOqsRrMlHfrA&s"; width="300"; height="350"; alt="Sophia Chair">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVs0XP7dPNXWy2KBx_nOc4wfOOqsRrMlHfrA&s" width="300" height="350" alt="Sophia Chair">
+                <div class="product-icons">
+                    <button class="icon-btn heart-btn" onclick="toggleWishlist(this)">♡</button>
+                    <button class="icon-btn eye-btn" onclick="quickView('Sophia Chair')">👁</button>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart(7, 'Sophia Chair', 400, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVs0XP7dPNXWy2KBx_nOc4wfOOqsRrMlHfrA&s')">Add To Cart</button>
             </div>
             <div class="product-card-content">
-                <div class="product-name"> Sophia Chair</div>
+                <div class="product-name">Sophia Chair</div>
                 <div class="product-footer">
                     <span class="product-price">$400</span>
                     <span class="product-heart">♡</span>
                 </div>
             </div>
         </div>
-        <div class="product-card">
-            <div class="product-image ">
+
+        <div class="product-card" data-id="8">
+            <div class="product-image">
                 <div class="product-tag">New</div>
-            <img src="https://m.media-amazon.com/images/I/81fOwaujXaL.jpg"; width="300"; height="350"; alt="Priilinex  Chair">
+                <img src="https://m.media-amazon.com/images/I/81fOwaujXaL.jpg" width="300" height="350" alt="Priilinex Chair">
+                <div class="product-icons">
+                    <button class="icon-btn heart-btn" onclick="toggleWishlist(this)">♡</button>
+                    <button class="icon-btn eye-btn" onclick="quickView('Priilinex Chair')">👁</button>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart(8, 'Priilinex Chair', 120, 'https://m.media-amazon.com/images/I/81fOwaujXaL.jpg')">Add To Cart</button>
             </div>
             <div class="product-card-content">
-                <div class="product-name">  Priilinex Chair</div>
+                <div class="product-name">Priilinex Chair</div>
                 <div class="product-footer">
                     <span class="product-price">$120</span>
                     <span class="product-heart">♡</span>
@@ -302,55 +468,131 @@
             </div>
         </div>
     </div>
+
     <!-- Footer -->
-<footer class="footer">
-    <div class="footer-container">
-        <!-- About Section -->
-        <div class="footer-about">
-            <h3>About Comfort</h3>
-            <p>Comfort is your go-to furniture store for premium quality chairs, tables, and home décor. Bringing comfort and style to your interiors.</p>
-        </div>
+    <footer class="footer">
+        <div class="footer-container">
+            <!-- About Section -->
+            <div class="footer-about">
+                <h3>About Comfort</h3>
+                <p>Comfort is your go-to furniture store for premium quality chairs, tables, and home décor. Bringing comfort and style to your interiors.</p>
+            </div>
 
-        <!-- Quick Links -->
-        <div class="footer-links">
-            <h3>Quick Links</h3>
-            <ul>
-                <li><a href="furniture.html">Home</a></li>
-                <li><a href="shop.html">Shop</a></li>
-                <li><a href="product.html">Product</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </div>
+            <!-- Quick Links -->
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li><a href="product.html">Product</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </div>
 
-        <!-- Customer Service -->
-        <div class="footer-service">
-            <h3>Customer Service</h3>
-            <ul>
-                <li><a href="faq.html">FAQ</a></li>
-                <li><a href="shipping.html">Shipping & Delivery</a></li>
-                <li><a href="returns.html">Returns & Exchanges</a></li>
-                <li><a href="privacy.html">Privacy Policy</a></li>
-            </ul>
-        </div>
+            <!-- Customer Service -->
+            <div class="footer-service">
+                <h3>Customer Service</h3>
+                <ul>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="shipping.html">Shipping & Delivery</a></li>
+                    <li><a href="returns.html">Returns & Exchanges</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                </ul>
+            </div>
 
-        <!-- Contact & Social Media -->
-        <div class="footer-contact">
-            <h3>Contact Us</h3>
-            <p>Phone: +44 7474 739724</p>
-            <p>Email: info@comfort.furniture</p>
-            <div class="social-icons">
-                <a href="# facebook"><img src="https://img.icons8.com/ios-filled/24/000000/facebook-new.png" alt="Facebook"></a>
-                <a href="#instagram"><img src="https://img.icons8.com/ios-filled/24/000000/instagram-new.png" alt="Instagram"></a>
-                <a href="#tiktok"><img src="https://img.icons8.com/ios-filled/24/000000/tiktok.png" alt="Tiktok"></a>
+            <!-- Contact & Social Media -->
+            <div class="footer-contact">
+                <h3>Contact Us</h3>
+                <p>Phone: +44 7474 739724</p>
+                <p>Email: info@comfort.furniture</p>
+                <div class="social-icons">
+                    <a href="#facebook"><img src="https://img.icons8.com/ios-filled/24/000000/facebook-new.png" alt="Facebook"></a>
+                    <a href="#instagram"><img src="https://img.icons8.com/ios-filled/24/000000/instagram-new.png" alt="Instagram"></a>
+                    <a href="#tiktok"><img src="https://img.icons8.com/ios-filled/24/000000/tiktok.png" alt="Tiktok"></a>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="footer-bottom">
-        <p>© 2026 Comfort. All Rights Reserved.</p>
-    </div>
-</footer>
+        <div class="footer-bottom">
+            <p>© 2026 Comfort. All Rights Reserved.</p>
+        </div>
+    </footer>
 
+    <script>
+        // Cart Management System
+        function getCart() {
+            return JSON.parse(localStorage.getItem('comfortCart')) || [];
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem('comfortCart', JSON.stringify(cart));
+            updateCartBadge();
+        }
+
+        function updateCartBadge() {
+            const cart = getCart();
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const badge = document.getElementById('cartBadge');
+            if (badge) {
+                badge.textContent = totalItems;
+                badge.style.display = totalItems > 0 ? 'flex' : 'none';
+            }
+        }
+
+        // Add to Cart function
+        function addToCart(id, name, price, image) {
+            let cart = getCart();
+            
+            // Check if item already exists
+            const existingItem = cart.find(item => item.id === id);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: id,
+                    name: name,
+                    price: price,
+                    image: image,
+                    quantity: 1
+                });
+            }
+            
+            saveCart(cart);
+            showNotification(`${name} added to cart!`);
+        }
+
+        // Show notification
+        function showNotification(message) {
+            const notification = document.getElementById('cartNotification');
+            notification.textContent = '✓ ' + message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Toggle wishlist
+        function toggleWishlist(button) {
+            if (button.textContent === '♡') {
+                button.textContent = '♥';
+                button.style.color = '#e74c3c';
+            } else {
+                button.textContent = '♡';
+                button.style.color = '#000';
+            }
+        }
+
+        // Quick view
+        function quickView(productName) {
+            alert(`Quick view for: ${productName}\n\nThis would typically open a modal with more product details.`);
+        }
+
+        // Initialize cart badge on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartBadge();
+        });
+    </script>
 </body>
 </html>

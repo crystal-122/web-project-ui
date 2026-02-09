@@ -197,17 +197,40 @@
             background: #f0f0f0;
         }
 
-        .btn-primary {
+        .coupon-section {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .coupon-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .coupon-input:focus {
+            outline: none;
+            border-color: #dc3545;
+        }
+
+        .apply-coupon-btn {
+            padding: 12px 30px;
             background: #dc3545;
             color: white;
-            flex: 1;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.3s;
         }
 
-        .btn-primary:hover {
+        .apply-coupon-btn:hover {
             background: #c82333;
         }
-
-     
 
         .cart-summary {
             background: #f9f9f9;
@@ -285,6 +308,22 @@
             border: 1px solid #f5c6cb;
         }
 
+        .empty-cart {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-cart h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        .empty-cart p {
+            color: #999;
+            margin-bottom: 20px;
+        }
+
         @keyframes slideDown {
             from {
                 opacity: 0;
@@ -294,6 +333,12 @@
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        .calculator-display {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
         }
 
         @media (max-width: 768px) {
@@ -317,18 +362,12 @@
                 position: static;
             }
         }
-
-        .calculator-display {
-            font-size: 12px;
-            color: #999;
-            margin-top: 5px;
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="breadcrumb">
-            <a href="furniture.html">Home</a>
+            <a href="index.html">Home</a>
             <span>/</span>
             <span>Cart</span>
         </div>
@@ -337,166 +376,231 @@
 
         <div id="message" class="message"></div>
 
-        <div class="cart-wrapper">
-            <div>
-                <div class="cart-header">
-                    <div>Product</div>
-                    <div>Price</div>
-                    <div>Quantity</div>
-                    <div>Subtotal</div>
-                    <div></div>
-                </div>
-
-                <div class="cart-items" id="cartItems">
-                    <div class="cart-item" data-price="50">
-                        <div class="item-info">
-                            <div class="item-image">
-                                <img class="product-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWnEOdRlt9Yx-ZoHVE-5lWoQWHVBZyVAjZ1w&s" alt="Gaming Chair" style="cursor: pointer;" title="Click to change product">
-                            </div>
-                            <div class="item-details">
-                                <h3 class="product-name" style="cursor: pointer; color: #333; text-decoration: underline;" title="Click to change product">Gaming Chair</h3>
-                            </div>
-                        </div>
-                        <div class="item-price">$50</div>
-                        <div>
-                            <div class="quantity-control">
-                                <button class="qty-minus">−</button>
-                                <input class="qty-input" type="number" value="1" min="1">
-                                <button class="qty-plus">+</button>
-                            </div>
-                            <div class="calculator-display">= <span class="calc-qty">1</span> × $<span class="calc-price">50</span></div>
-                        </div>
-                        <div class="subtotal">$50</div>
-                        <button class="remove-item">✕</button>
-                    </div>
-
-                    <div class="cart-item" data-price="20">
-                        <div class="item-info">
-                            <div class="item-image">
-                                <img class="product-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdOtHeatKFOnsTj7jbrzHx56D9E3H_wmu6PA&s" alt="Library Stool Chair" style="cursor: pointer;" title="Click to change product">
-                            </div>
-                            <div class="item-details">
-                                <h3 class="product-name" style="cursor: pointer; color: #333; text-decoration: underline;" title="Click to change product">Library Stool Chair</h3>
-                            </div>
-                        </div>
-                        <div class="item-price">$20</div>
-                        <div>
-                            <div class="quantity-control">
-                                <button class="qty-minus">−</button>
-                                <input class="qty-input" type="number" value="2" min="1">
-                                <button class="qty-plus">+</button>
-                            </div>
-                            <div class="calculator-display">= <span class="calc-qty">2</span> × $<span class="calc-price">20</span></div>
-                        </div>
-                        <div class="subtotal">$40</div>
-                        <button class="remove-item">✕</button>
-                    </div>
-                </div>
-
-                <div class="cart-actions">
-                    <button class="btn btn-secondary" id="returnBtn">Return To Shop</button>
-                    <button class="btn btn-secondary" id="updateBtn">Update Cart</button>
-                </div>
-
-           
-            </div>
-
-            <div class="cart-summary">
-                <h2>Cart Total</h2>
-                <div class="summary-row">
-                    <span>Subtotal:</span>
-                    <span id="subtotalDisplay">$90</span>
-                </div>
-                <div class="summary-row" id="discountRow" style="display: none;">
-                    <span>Discount:</span>
-                    <span id="discountDisplay">-$0</span>
-                </div>
-                <div class="summary-row">
-                    <span>Shipping:</span>
-                    <span>Free</span>
-                </div>
-                <div class="summary-row total">
-                    <span>Total:</span>
-                    <span id="totalDisplay">$90</span>
-                </div>
-                <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
-            </div>
+        <div id="cartContent">
+            <!-- Cart will be loaded here by JavaScript -->
         </div>
     </div>
 
     <script>
         let appliedDiscount = 0;
 
-        function updateCalculatorDisplay(item) {
-            const qty = item.querySelector('.qty-input').value;
-            const price = item.dataset.price;
-            item.querySelector('.calc-qty').textContent = qty;
-            item.querySelector('.calc-price').textContent = price;
+        function getCart() {
+            return JSON.parse(localStorage.getItem('comfortCart')) || [];
         }
 
-        function calculateSubtotal(item) {
-            const qty = parseInt(item.querySelector('.qty-input').value) || 1;
-            const price = parseFloat(item.dataset.price);
-            return qty * price;
+        function saveCart(cart) {
+            localStorage.setItem('comfortCart', JSON.stringify(cart));
+        }
+
+        function renderCart() {
+            const cart = getCart();
+            const cartContent = document.getElementById('cartContent');
+
+            if (cart.length === 0) {
+                cartContent.innerHTML = `
+                    <div class="empty-cart">
+                        <h2>Your cart is empty</h2>
+                        <p>Add some items to get started!</p>
+                        <button class="btn btn-secondary" onclick="window.location.href='index.html'">Continue Shopping</button>
+                    </div>
+                `;
+                return;
+            }
+
+            let cartHTML = `
+                <div class="cart-wrapper">
+                    <div>
+                        <div class="cart-header">
+                            <div>Product</div>
+                            <div>Price</div>
+                            <div>Quantity</div>
+                            <div>Subtotal</div>
+                            <div></div>
+                        </div>
+                        <div class="cart-items" id="cartItems">
+            `;
+
+            cart.forEach(item => {
+                cartHTML += `
+                    <div class="cart-item" data-id="${item.id}" data-price="${item.price}">
+                        <div class="item-info">
+                            <div class="item-image">
+                                <img src="${item.image}" alt="${item.name}">
+                            </div>
+                            <div class="item-details">
+                                <h3 class="product-name">${item.name}</h3>
+                            </div>
+                        </div>
+                        <div class="item-price">$${item.price}</div>
+                        <div>
+                            <div class="quantity-control">
+                                <button class="qty-minus">−</button>
+                                <input class="qty-input" type="number" value="${item.quantity}" min="1">
+                                <button class="qty-plus">+</button>
+                            </div>
+                            <div class="calculator-display">= <span class="calc-qty">${item.quantity}</span> × $<span class="calc-price">${item.price}</span></div>
+                        </div>
+                        <div class="subtotal">$${(item.price * item.quantity).toFixed(2)}</div>
+                        <button class="remove-item">✕</button>
+                    </div>
+                `;
+            });
+
+            cartHTML += `
+                        </div>
+                        <div class="cart-actions">
+                            <button class="btn btn-secondary" id="returnBtn">Return To Shop</button>
+                            <button class="btn btn-secondary" id="updateBtn">Update Cart</button>
+                        </div>
+                        <div class="coupon-section">
+                            <input type="text" class="coupon-input" id="couponInput" placeholder="Enter coupon code (e.g., SAVE10, SAVE20, FLAT50)">
+                            <button class="apply-coupon-btn" id="applyCoupon">Apply Coupon</button>
+                        </div>
+                    </div>
+                    <div class="cart-summary">
+                        <h2>Cart Total</h2>
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span id="subtotalDisplay">$0</span>
+                        </div>
+                        <div class="summary-row" id="discountRow" style="display: none;">
+                            <span>Discount:</span>
+                            <span id="discountDisplay">-$0</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Shipping:</span>
+                            <span>Free</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total:</span>
+                            <span id="totalDisplay">$0</span>
+                        </div>
+                        <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
+                    </div>
+                </div>
+            `;
+
+            cartContent.innerHTML = cartHTML;
+            attachEventListeners();
+            updateCartTotals();
+        }
+
+        function attachEventListeners() {
+            // Quantity controls
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('qty-plus')) {
+                    const cartItem = e.target.closest('.cart-item');
+                    const input = cartItem.querySelector('.qty-input');
+                    const id = parseInt(cartItem.dataset.id);
+                    updateQuantity(id, parseInt(input.value) + 1);
+                }
+
+                if (e.target.classList.contains('qty-minus')) {
+                    const cartItem = e.target.closest('.cart-item');
+                    const input = cartItem.querySelector('.qty-input');
+                    const id = parseInt(cartItem.dataset.id);
+                    if (parseInt(input.value) > 1) {
+                        updateQuantity(id, parseInt(input.value) - 1);
+                    }
+                }
+
+                if (e.target.classList.contains('remove-item')) {
+                    const cartItem = e.target.closest('.cart-item');
+                    const id = parseInt(cartItem.dataset.id);
+                    removeItem(id);
+                }
+            });
+
+            // Quantity input change
+            document.addEventListener('change', function(e) {
+                if (e.target.classList.contains('qty-input')) {
+                    const cartItem = e.target.closest('.cart-item');
+                    const id = parseInt(cartItem.dataset.id);
+                    const newQty = Math.max(1, parseInt(e.target.value) || 1);
+                    updateQuantity(id, newQty);
+                }
+            });
+
+            // Other buttons
+            const returnBtn = document.getElementById('returnBtn');
+            if (returnBtn) {
+                returnBtn.addEventListener('click', () => {
+                    window.location.href = 'index.html';
+                });
+            }
+
+            const updateBtn = document.getElementById('updateBtn');
+            if (updateBtn) {
+                updateBtn.addEventListener('click', () => {
+                    showMessage('Cart updated successfully!', 'success');
+                });
+            }
+
+            const applyCoupon = document.getElementById('applyCoupon');
+            if (applyCoupon) {
+                applyCoupon.addEventListener('click', applyCouponCode);
+            }
+
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            if (checkoutBtn) {
+                checkoutBtn.addEventListener('click', () => {
+                    const total = document.getElementById('totalDisplay').textContent;
+                    showMessage('Proceeding to checkout with total: ' + total, 'success');
+                    setTimeout(() => {
+                        alert('Thank you for your order!\nTotal: ' + total);
+                    }, 1500);
+                });
+            }
+
+            const couponInput = document.getElementById('couponInput');
+            if (couponInput) {
+                couponInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        applyCouponCode();
+                    }
+                });
+            }
+        }
+
+        function updateQuantity(id, quantity) {
+            let cart = getCart();
+            const item = cart.find(i => i.id === id);
+            if (item) {
+                item.quantity = quantity;
+                saveCart(cart);
+                renderCart();
+            }
+        }
+
+        function removeItem(id) {
+            let cart = getCart();
+            const item = cart.find(i => i.id === id);
+            cart = cart.filter(i => i.id !== id);
+            saveCart(cart);
+            showMessage(item.name + ' removed from cart', 'success');
+            renderCart();
         }
 
         function updateCartTotals() {
+            const cart = getCart();
             let grandTotal = 0;
-            const cartItems = document.querySelectorAll('.cart-item');
 
-            cartItems.forEach(item => {
-                const subtotal = calculateSubtotal(item);
-                item.querySelector('.subtotal').textContent = '$' + subtotal.toFixed(2);
-                updateCalculatorDisplay(item);
-                grandTotal += subtotal;
+            cart.forEach(item => {
+                grandTotal += item.price * item.quantity;
             });
 
             const finalTotal = grandTotal - appliedDiscount;
-            document.getElementById('subtotalDisplay').textContent = '$' + grandTotal.toFixed(2);
-            document.getElementById('totalDisplay').textContent = '$' + finalTotal.toFixed(2);
+            
+            const subtotalDisplay = document.getElementById('subtotalDisplay');
+            const totalDisplay = document.getElementById('totalDisplay');
+            
+            if (subtotalDisplay) subtotalDisplay.textContent = '$' + grandTotal.toFixed(2);
+            if (totalDisplay) totalDisplay.textContent = '$' + finalTotal.toFixed(2);
         }
 
-        // Quantity increase
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('qty-plus')) {
-                const input = e.target.closest('.quantity-control').querySelector('.qty-input');
-                input.value = parseInt(input.value) + 1;
-                updateCartTotals();
-            }
-        });
-
-        // Quantity decrease
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('qty-minus')) {
-                const input = e.target.closest('.quantity-control').querySelector('.qty-input');
-                if (parseInt(input.value) > 1) {
-                    input.value = parseInt(input.value) - 1;
-                    updateCartTotals();
-                }
-            }
-        });
-
-        // Quantity input change
-        document.addEventListener('change', function(e) {
-            if (e.target.classList.contains('qty-input')) {
-                if (e.target.value < 1) e.target.value = 1;
-                updateCartTotals();
-            }
-        });
-
-        // Remove item
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('remove-item')) {
-                const itemName = e.target.closest('.cart-item').querySelector('.item-details h3').textContent;
-                e.target.closest('.cart-item').remove();
-                showMessage(itemName + ' removed from cart', 'success');
-                updateCartTotals();
-            }
-        });
-
-        // Coupon functionality
-        document.getElementById('applyCoupon').addEventListener('click', function() {
-            const couponCode = document.getElementById('couponInput').value.toUpperCase();
+        function applyCouponCode() {
+            const couponInput = document.getElementById('couponInput');
+            const couponCode = couponInput.value.toUpperCase();
             const subtotal = parseFloat(document.getElementById('subtotalDisplay').textContent.replace('$', ''));
             
             let discount = 0;
@@ -523,39 +627,15 @@
                 
                 document.getElementById('discountRow').style.display = 'flex';
                 document.getElementById('discountDisplay').textContent = '-$' + appliedDiscount.toFixed(2);
-                document.getElementById('couponInput').value = '';
+                couponInput.value = '';
                 
                 updateCartTotals();
             } else {
                 showMessage('Invalid coupon code', 'error');
-                document.getElementById('couponInput').value = '';
+                couponInput.value = '';
             }
-        });
+        }
 
-        // Return to shop
-        document.getElementById('returnBtn').addEventListener('click', function() {
-            showMessage('Redirecting to shop...', 'success');
-            setTimeout(() => {
-                window.location.href = 'furniture.html';
-            }, 1500);
-        });
-
-        // Update cart
-        document.getElementById('updateBtn').addEventListener('click', function() {
-            updateCartTotals();
-            showMessage('Cart updated successfully!', 'success');
-        });
-
-        // Checkout
-        document.getElementById('checkoutBtn').addEventListener('click', function() {
-            const total = document.getElementById('totalDisplay').textContent;
-            showMessage('Proceeding to checkout with total: ' + total, 'success');
-            setTimeout(() => {
-                alert('Thank you for your order!\nTotal: ' + total);
-            }, 1500);
-        });
-
-        // Show message
         function showMessage(message, type = 'success') {
             const messageEl = document.getElementById('message');
             messageEl.textContent = message;
@@ -566,15 +646,8 @@
             }, 3000);
         }
 
-        // Enter key for coupon
-        document.getElementById('couponInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                document.getElementById('applyCoupon').click();
-            }
-        });
-
-        // Initialize
-        updateCartTotals();
+        // Initialize cart on page load
+        document.addEventListener('DOMContentLoaded', renderCart);
     </script>
 </body>
 </html>
